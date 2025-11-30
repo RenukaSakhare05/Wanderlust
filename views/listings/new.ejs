@@ -1,0 +1,115 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row">
+  <div class="col-8 offset-2">
+    <h3>Create a New Listing</h3>
+
+    <!-- ⭐ FIXED: enctype + correct action -->
+    <form 
+      method="POST" 
+      action="/listings" 
+      enctype="multipart/form-data" 
+      novalidate 
+      class="needs-validation">
+
+      <!-- Title -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          id="title"
+          name="listing[title]"
+          type="text"
+          class="form-control"
+          placeholder="Add a catchy title"
+          required
+        />
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          id="description"
+          name="listing[description]"
+          class="form-control"
+          placeholder="Enter description"
+          required
+        ></textarea>
+      </div>
+
+      <!-- Upload Image -->
+      <div class="mb-3">
+        <label for="image" class="form-label">Upload Listing Image</label>
+        <input 
+          id="image"
+          name="listing[image]"
+          type="file"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Price -->
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input
+          id="price"
+          name="listing[price]"
+          type="number"
+          min="0"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Country -->
+      <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input
+          id="country"
+          name="listing[country]"
+          type="text"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Location -->
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input
+          id="location"
+          name="listing[location]"
+          type="text"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <button class="btn btn-dark add-btn">Add</button>
+    </form>
+  </div>
+</div>
+
+<!-- 🚀 Client-side validation -->
+<script>
+(() => {
+  "use strict";
+
+  const forms = document.querySelectorAll(".needs-validation");
+
+  Array.from(forms).forEach(form => {
+    form.addEventListener(
+      "submit",
+      event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  });
+})();
+</script>

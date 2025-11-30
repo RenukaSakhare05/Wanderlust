@@ -1,0 +1,138 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- ⭐ Helper function (Only used if needed somewhere else) -->
+<%
+  function getStars(rating) {
+    let stars = "";
+    for (let i = 1; i <= 5; i++) {
+      stars += i <= rating ? "⭐" : "☆";
+    }
+    return stars;
+  }
+%>
+
+<!-- ⭐ TITLE -->
+<div class="row">
+  <div class="col-8 offset-2">
+    <h3><%= listing.title %></h3>
+  </div>
+</div>
+
+<!-- ⭐ LISTING CARD -->
+<div class="card col-6 offset-2 mb-4">
+  <img 
+    src="<%= listing.image.url %>" 
+    class="card-img-top show-img"
+    alt="listing_image"
+  />
+
+  <div class="card-body">
+
+    <p class="card-text">
+      Owned by <i><%= listing.owner.username %></i>
+    </p>
+
+    <p class="card-text"><%= listing.description %></p>
+
+    <p class="card-text">₹ <%= listing.price.toLocaleString("en-IN") %></p>
+
+    <p class="card-text"><%= listing.location %></p>
+
+    <p class="card-text"><%= listing.country %></p>
+
+  </div>
+</div>
+
+<!-- ⭐ OWNER EDIT + DELETE -->
+<% if (currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
+<div class="col-6 offset-2 mb-4">
+  <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark">Edit this Listing</a>
+
+  <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
+    <button class="btn btn-danger">Delete this Listing</button>
+  </form>
+</div>
+<% } %>
+
+<!-- ⭐ REVIEW FORM (Starability Only — Slider Removed Completely) -->
+<% if (currUser) { %>
+<div class="col-8 offset-2 mb-5">
+  <hr />
+  <h4>Leave a Review</h4>
+
+  <form method="POST" action="/listings/<%= listing._id %>/reviews">
+
+    <!-- ⭐ Starability Rating Widget -->
+    <fieldset class="starability-slot">
+      <legend class="visually-hidden">Rating</legend>
+
+      <input type="radio" id="rate-1" name="review[rating]" value="1">
+      <label for="rate-1" title="1 star"></label>
+
+      <input type="radio" id="rate-2" name="review[rating]" value="2">
+      <label for="rate-2" title="2 stars"></label>
+
+      <input type="radio" id="rate-3" name="review[rating]" value="3">
+      <label for="rate-3" title="3 stars"></label>
+
+      <input type="radio" id="rate-4" name="review[rating]" value="4">
+      <label for="rate-4" title="4 stars"></label>
+
+      <input type="radio" id="rate-5" name="review[rating]" value="5" checked>
+      <label for="rate-5" title="5 stars"></label>
+    </fieldset>
+
+    <!-- ⭐ COMMENT -->
+    <div class="mt-3 mb-3">
+      <label for="comment" class="form-label">Comments</label>
+      <textarea
+        name="review[comment]"
+        id="comment"
+        cols="30"
+        rows="4"
+        class="form-control"
+        placeholder="Write your thoughts..."
+        required
+      ></textarea>
+    </div>
+
+    <button class="btn btn-outline-dark">Submit</button>
+  </form>
+</div>
+<% } %>
+
+<!-- ⭐ DISPLAY ALL REVIEWS -->
+<div class="col-8 offset-2 mb-5">
+  <hr />
+  <h4><b>All Reviews</b></h4>
+
+  <div class="row">
+    <% listing.reviews.forEach(review => { %>
+      
+      <div class="card col-5 ms-3 mb-3 p-0 shadow-sm">
+        <div class="card-body">
+
+          <!-- ⭐ Reviewer Name -->
+          <h5 class="card-title">
+            <%= review.author ? review.author.username : "Unknown User" %>
+          </h5>
+
+          <!-- ⭐ Comment -->
+          <p class="card-text"><%= review.comment %></p>
+
+          <!-- ⭐ Starability star display -->
+          <p class="starability-result card-text" data-rating="<%= review.rating %>">
+            Rated <%= review.rating %> Stars
+          </p>
+
+          <!-- ⭐ Delete Button -->
+          <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+            <button class="btn btn-sm btn-dark">Delete</button>
+          </form>
+
+        </div>
+      </div>
+
+    <% }) %>
+  </div>
+</div>

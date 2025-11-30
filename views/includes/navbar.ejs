@@ -1,0 +1,59 @@
+
+
+<nav class="navbar navbar-expand-md custom-navbar sticky-top border-bottom bg-white shadow-sm">
+  <div class="container">
+
+    <!-- LOGO + TEXT -->
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <i class="fa-solid fa-compass me-2"></i>
+      <span class="brand-text">Wanderlust</span>
+    </a>
+
+    <!-- MOBILE TOGGLE -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+
+      <!-- LEFT LINKS -->
+      <ul class="navbar-nav ms-3">
+        <li class="nav-item"><a class="nav-link" href="/listings"><b>Explore</b></a></li>
+        <% if(currUser){ %>
+          <li class="nav-item"><a class="nav-link" href="/listings/new"><b>Airbnb your home</b></a></li>
+        <% } %>
+      </ul>
+
+      <!-- SEARCH BAR -->
+      <form 
+        class="search-bar mx-auto d-flex my-2 my-md-0"
+        action="#">
+        <input 
+          type="search"
+          name="q"
+          class="search-input"
+          placeholder="Search destinations"
+        />
+        <button class="search-button" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i> Search
+        </button>
+      </form>
+
+      <!-- RIGHT AUTH LINKS -->
+      <ul class="navbar-nav ms-md-auto">
+        <% if (!currUser) { %>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="/signup">Sign up</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="/login">Log in</a></li>
+        <% } else { %>
+          <li class="nav-item d-flex align-items-center">
+            <span class="nav-link disabled"><b>Hi, <%= currUser.username %></b></span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-semibold" href="/logout">Logout</a>
+          </li>
+        <% } %>
+      </ul>
+
+    </div>
+  </div>
+</nav>
